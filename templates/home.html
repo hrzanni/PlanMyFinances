@@ -1,1 +1,118 @@
-{% extends 'base.html' %} {% block body %} {% endblock %}
+{% extends 'base.html' %} {% block body %}
+<div class="content">
+    <h1 class="name">PlanMyFinances</strong></h1>
+
+    <div class="add-container">
+      <div class="add">
+        <h3>Adicionar Receita</h3>
+        <button id="add-button-revenue" class="add-button">+</button>
+        <p>Clique para adicionar uma receita</p>
+      </div>
+
+      <div class="add">
+        <h3>Adicionar Despesa</h3>
+        <button id="add-button-expense" class="add-button">+</button>
+        <p>Clique para adicionar uma despesa</p>
+      </div>
+    </div>
+
+    <div id="add-button-revenue-form" class="modal-overlay" style="display: none">
+        <div class="modal-content">
+            <button id="close-modal" class="close-button">×</button>
+            <form action="/add-revenue" method="POST">
+                <h1>ADICIONAR RECEITA</h1>
+                <label for="valor">Valor:</label>
+                <input type="number" name="valor" required><br>
+
+                <label for="descricao">Descrição:</label>
+                <input type="text" name="descricao" required><br>
+
+                <label for="tipo">Tipo:</label>
+                <input type="text" name="tipo" required><br>
+
+                <label for="subtipo">Subtipo:</label>
+                <input type="text" name="subtipo"><br>
+
+                <label for="data">Data:</label>
+                <input type="date" name="data" id="data-input" required><br>
+
+                <button type="submit">Salvar</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="add-button-expense-form" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+          <button id="close-expense-modal" class="close-button">×</button>
+          <form action="/add-expense" method="POST">
+            <h1>ADICIONAR DESPESA</h1>
+            <label for="valor">Valor:</label>
+            <input type="number" name="valor" required><br>
+      
+            <label for="descricao">Descrição:</label>
+            <input type="text" name="descricao" required><br>
+      
+            <label for="tipo">Tipo:</label>
+            <input type="text" name="tipo" required><br>
+      
+            <label for="subtipo">Subtipo:</label>
+            <input type="text" name="subtipo"><br>
+      
+            <label for="data">Data:</label>
+            <input type="date" name="data" id="data-expense-input" required><br>
+      
+            <button type="submit">Salvar</button>
+          </form>
+        </div>
+      </div>
+
+    <div class="add-type">
+        <h2>Gerenciador de Tipos e subTipos</h2>
+        
+    </div>
+    
+    <script>
+        // Receita
+        const openRevenueBtn = document.getElementById("add-button-revenue");
+        const revenueModal = document.getElementById("add-button-revenue-form");
+        const closeRevenueBtn = document.getElementById("close-modal");
+      
+        openRevenueBtn.addEventListener("click", () => {
+          revenueModal.style.display = "flex";
+          const today = new Date().toISOString().split("T")[0];
+          document.getElementById("data-input").value = today;
+        });
+      
+        closeRevenueBtn.addEventListener("click", () => {
+          revenueModal.style.display = "none";
+        });
+      
+        window.addEventListener("click", (e) => {
+          if (e.target === revenueModal) {
+            revenueModal.style.display = "none";
+          }
+        });
+      
+        // Despesa
+        const openExpenseBtn = document.getElementById("add-button-expense");
+        const expenseModal = document.getElementById("add-button-expense-form");
+        const closeExpenseBtn = document.getElementById("close-expense-modal");
+      
+        openExpenseBtn.addEventListener("click", () => {
+          expenseModal.style.display = "flex";
+          const today = new Date().toISOString().split("T")[0];
+          document.getElementById("data-expense-input").value = today;
+        });
+      
+        closeExpenseBtn.addEventListener("click", () => {
+          expenseModal.style.display = "none";
+        });
+      
+        window.addEventListener("click", (e) => {
+          if (e.target === expenseModal) {
+            expenseModal.style.display = "none";
+          }
+        });
+      </script>
+</div>
+{% endblock %}

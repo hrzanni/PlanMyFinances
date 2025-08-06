@@ -1,48 +1,171 @@
-/* Edição da sidebar.html */
+body {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  background-color: #f9f9f9;
+}
 
-.sidebar {
-  position: fixed; /*Faz a sidebar ficar fixa na tela, mesmo se você rolar a página. */
-  top: 0;
-  left: 0;
-  height: 100vh; /*Define a altura como 100% da altura da tela do navegador (viewport). */
-  width: 180px; /*Define a largura como 200 pixels. */
+.content {
+  margin: 20px 70px;
+}
+
+/* Edição da navbar.html */
+
+.navbar {
   background-color: #2c3e50;
 }
-.sidebar-container {
+.navbar-container {
+  margin: 0 auto;
+  padding: 0 40px;
   display: flex;
-  flex-direction: column;
-  padding: 1rem;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.sidebar-link {
+.navbar-home {
+  font-size: 22px;
+  font-weight: bold;
   color: white;
   text-decoration: none;
+}
+
+.navbar-home:hover {
+  text-decoration: underline;
+}
+
+.navbar-items {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+.navbar-items li a {
+  text-decoration: none;
+  color: white;
   margin: 8px 0;
   font-size: 1.2rem;
 }
 
-.sidebar-link:hover {
+.navbar-link:hover {
   text-decoration: underline;
 }
 
-.sidebar-OpenAndClose {
-  font-size: 1.5rem;
-  cursor: pointer;
-  margin-bottom: 1rem;
-  align-self: flex-end;
-}
-
-.sidebar.closed {
-  width: 45px;
-}
-
-.sidebar.closed .sidebar-link {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.sidebar.closed .sidebar-OpenAndClose {
-  align-self: center;
-}
-
 /* Edição da home.html */
+
+.name {
+  text-align: end;
+  padding: 0 30px;
+}
+
+.add-container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.add {
+  height: 150px;
+  width: 170px;
+  padding: 16px;
+  border: 2px solid black;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.add-button {
+  background-color: #2ecc71; /* verde suave */
+  color: white;
+  font-size: 24px;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-button:hover {
+  background-color: #27ae60; /* verde mais escuro no hover */
+}
+
+.modal-content label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.modal-content button[type="submit"] {
+  margin-top: 15px;
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.modal-content button[type="submit"]:hover {
+  background-color: #27ae60;
+}
+
+/* Modal overlay escurece o fundo */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* fundo escuro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Conteúdo do modal */
+.modal-content {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+/* Botão de fechar (X) */
+.close-button {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.2s ease;
+}
+
+.close-button:hover {
+  color: #000;
+}
+
+.add-type {
+  height: 150px;
+  width: auto;
+  padding: 16px;
+  margin: 40px 0;
+  border: 2px solid black;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
