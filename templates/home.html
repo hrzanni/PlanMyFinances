@@ -5,13 +5,13 @@
     <div class="add-container">
       <div class="add">
         <h3>Adicionar Receita</h3>
-        <button id="add-button-revenue" class="add-button">+</button>
+        <button id="add-button-revenue" class="add-button-green">+</button>
         <p>Clique para adicionar uma receita</p>
       </div>
 
       <div class="add">
         <h3>Adicionar Despesa</h3>
-        <button id="add-button-expense" class="add-button">+</button>
+        <button id="add-button-expense" class="add-button-red">+</button>
         <p>Clique para adicionar uma despesa</p>
       </div>
     </div>
@@ -66,8 +66,49 @@
         </div>
       </div>
 
-    <div class="add-type">
-        <h2>Gerenciador de Tipos e subTipos</h2>
+    <div class="add-typeANDSubtype">
+        <h2>Gerenciador de Tipos e SubTipos</h2>
+        <div class="add-typeANDSubtype-type">
+            <form action="/add-type" method="POST">
+                <input type="text" name="tipos" placeholder="Adicione um tipo" required>
+                <button class="add-type-button" type="submit">+</button>
+            </form>
+            <table class="styled-table">
+                <thead>
+                  <tr>
+                    <th>Tipos criados</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in tipos_disponiveis %}
+                    <tr>
+                      <td>{{ item }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+        </div>
+
+        <div class="add-typeANDSubtype-subtype">
+            <form action="/add-subtype" method="POST">
+                <input type="text" name="subtipos" placeholder="Adicione um subtipo" required>
+                <button class="add-subtype-button" type="submit">+</button>
+            </form>
+            <table class="styled-table">
+                <thead>
+                  <tr>
+                    <th>Subtipos criados</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in subtipos_disponiveis %}
+                    <tr>
+                      <td>{{ item }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+        </div>
         
     </div>
     
