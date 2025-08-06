@@ -42,8 +42,8 @@ def add_revenue():
         'data': request.form['data']
     }
 
-    if os.path.exists('receitas.json'):
-        with open('receitas.json', 'r') as f:
+    if os.path.exists('data/receitas.json'):
+        with open('data/receitas.json', 'r') as f:
             dados = json.load(f)
 
     else:
@@ -51,7 +51,7 @@ def add_revenue():
 
     dados.append(nova_receita)
 
-    with open('receitas.json' , 'w') as f:
+    with open('data/receitas.json' , 'w') as f:
         json.dump(dados, f, indent=4)
     
     return redirect('/')
@@ -66,8 +66,8 @@ def add_expense():
         'data': request.form['data']
     }
 
-    if os.path.exists('despesas.json'):
-        with open('despesas.json', 'r') as f:
+    if os.path.exists('data/despesas.json'):
+        with open('data/despesas.json', 'r') as f:
             despesas = json.load(f)
     
     else:
@@ -75,7 +75,7 @@ def add_expense():
 
     despesas.append(nova_despesa);
 
-    with open('despesas.json', 'w') as f:
+    with open('data/despesas.json', 'w') as f:
         json.dump(despesas, f, indent=4)
 
     return redirect('/')
