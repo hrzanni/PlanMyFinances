@@ -1,0 +1,65 @@
+{% extends 'base.html' %} {% block title %}Histórico{% endblock %}{% block body
+%}
+
+<div class="content">
+  <h2 class="name">Histórico completo de transações</h2>
+
+  <div class="general-balance"></div>
+
+  <form method="GET" action="/histórico" class="filter-form">
+
+    <!-- Categoria -->
+    <label for="categoria">Categoria:</label>
+    <select name="categoria" id="categoria">
+        <option value="">Todas</option>
+        <option value="receita" {% if request.args.get('categoria') == 'receita' %}selected{% endif %}>Receita</option>
+        <option value="despesa" {% if request.args.get('categoria') == 'despesa' %}selected{% endif %}>Despesa</option>
+    </select>
+
+    <!-- Tipo -->
+    <label for="tipo">Tipo:</label>
+    <select name="tipo" id="tipo">
+      <option value="">Todos</option>
+      {% for tipo in tipos_disponiveis %}
+        <option value="{{ tipo }}" {% if tipo == request.args.get('tipo') %}selected{% endif %}>{{ tipo }}</option>
+      {% endfor %}
+    </select>
+    
+    <!-- Subtipo -->
+    <label for="subtipo">Subtipo:</label>
+    <select name="subtipo" id="subtipo">
+      <option value="">Todos</option>
+      {% for subtipo in subtipos_disponiveis %}
+        <option value="{{ subtipo }}" {% if subtipo == request.args.get('subtipo') %}selected{% endif %}>{{ subtipo }}</option>
+      {% endfor %}
+    </select>
+  
+    <button type="submit">Filtrar</button>
+    <a href="/histórico"><button type="button">Limpar Filtros</button></a>
+  </form>
+
+  <table class="transaction-table">
+    <thead>
+      <tr>
+        <th>Descrição</th>
+        <th>Tipo</th>
+        <th>Subtipo</th>
+        <th>Data</th>
+        <th>Valor</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in movimentacoes_historico %}
+      <tr class="{{ 'receita' if m.categoria == 'receita' else 'despesa' }}">
+        <td>{{ m.descricao }}</td>
+        <td>{{ m.tipo }}</td>
+        <td>{{ m.subtipo }}</td>
+        <td>{{ m.data }}</td>
+        <td>R$ {{ m.valor }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

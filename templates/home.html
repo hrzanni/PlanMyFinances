@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block body %}
 <div class="content">
-    <h1 class="name">PlanMyFinances</strong></h1>
+    <h1 class="name">PlanMyFinances</h1>
 
     <div class="home-top-container">
       <div class="add-container">
@@ -19,7 +19,7 @@
 
       <div class="recentSummary">
         <table class="transaction-table">
-          <h3>Últimas Movimentações</h3>
+          <h3>5 últimas Movimentações</h3>
           <thead>
             <tr>
               <th>Descrição</th>
@@ -50,16 +50,25 @@
             <form action="/add-revenue" method="POST">
                 <h1>ADICIONAR RECEITA</h1>
                 <label for="valor">Valor:</label>
-                <input type="number" name="valor" required><br>
+                <input type="number" name="valor" step="0.01" required><br>
 
                 <label for="descricao">Descrição:</label>
                 <input type="text" name="descricao" required><br>
 
                 <label for="tipo">Tipo:</label>
-                <input type="text" name="tipo" required><br>
+                <select name="tipo" id="tipo-select-receita" required>
+                  <option value="" disabled selected>Escolha um tipo</option>
+                  {% for tipo in tipos_disponiveis %}
+                    <option value="{{ tipo|lower }}">{{ tipo }}</option>
+                  {% endfor %}
+                </select><br>
 
-                <label for="subtipo">Subtipo:</label>
-                <input type="text" name="subtipo"><br>
+                <label for="subtipo">Subtipo(opcional):</label>
+                <select name="subtipo" id="subtipo-select-receita">
+                  {% for subtipo in subtipos_disponiveis %}
+                    <option value="" disabled selected>Escolha um subtipo</option>              
+                  {% endfor %}
+                </select><br>
 
                 <label for="data">Data:</label>
                 <input type="date" name="data" id="data-input" required><br>
@@ -75,16 +84,26 @@
           <form action="/add-expense" method="POST">
             <h1>ADICIONAR DESPESA</h1>
             <label for="valor">Valor:</label>
-            <input type="number" name="valor" required><br>
+            <input type="number" name="valor" step="0.01" required><br>
       
             <label for="descricao">Descrição:</label>
             <input type="text" name="descricao" required><br>
-      
+            
             <label for="tipo">Tipo:</label>
-            <input type="text" name="tipo" required><br>
-      
-            <label for="subtipo">Subtipo:</label>
-            <input type="text" name="subtipo"><br>
+                <select name="tipo" id="tipo-select-despesa" required>
+                  <option value="" disabled selected>Escolha um tipo</option>
+                  {% for tipo in tipos_disponiveis %}
+                    <option value="{{ tipo|lower }}">{{ tipo }}</option>
+                  {% endfor %}
+                </select><br>
+
+                <label for="subtipo">Subtipo(opcional):</label>
+                <select name="subtipo" id="subtipo-select-despesa">
+                  {% for subtipo in subtipos_disponiveis %}
+                  <option value="" disabled selected>Escolha um subtipo</option> 
+                  {% endfor %}
+                </select><br>
+
       
             <label for="data">Data:</label>
             <input type="date" name="data" id="data-expense-input" required><br>
@@ -95,7 +114,7 @@
       </div>
 
     <div class="add-typeANDSubtype">
-        <h2>Gerenciador de Tipos e SubTipos</h2>
+        <h2>Gerenciador de Tipos e <br>SubTipos</h2>
         <div class="add-typeANDSubtype-type">
             <form action="/add-type" method="POST">
                 <input type="text" name="tipos" placeholder="Adicione um tipo" required>
@@ -120,19 +139,31 @@
         <div class="add-typeANDSubtype-subtype">
             <form action="/add-subtype" method="POST">
                 <input type="text" name="subtipos" placeholder="Adicione um subtipo" required>
+                
+                <select name="tipo_relacionado" required">
+                  <option value="" disabled selected>Selecione o tipo</option>
+                  {% for tipo in tipos_disponiveis %}
+                    <option value="{{ tipo }}">{{ tipo }}</option>
+                  {% endfor %}
+                </select>
+
                 <button class="add-subtype-button" type="submit">+</button>
             </form>
             <table class="styled-table">
                 <thead>
                   <tr>
                     <th>Subtipos criados</th>
+                    <th>Tipo relacionado</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {% for item in subtipos_disponiveis %}
-                    <tr>
-                      <td>{{ item }}</td>
-                    </tr>
+                  {% for subtipo, tipo in subtipos_por_tipo.items() %}
+                    {% for st in tipo %}
+                      <tr>
+                        <td>{{ st }}</td>
+                        <td>{{ subtipo }}</td>
+                      </tr>
+                    {% endfor %}
                   {% endfor %}
                 </tbody>
               </table>
@@ -140,6 +171,38 @@
         
     </div>
     
+    <script>
+      const subtiposPorTipo = {{ subtipos_por_tipo | tojson }};
+    
+      function configurarSelects(tipoId, subtipoId) {
+        const tipoSelect = document.getElementById(tipoId);
+        const subtipoSelect = document.getElementById(subtipoId);
+    
+        if (!tipoSelect || !subtipoSelect) return;
+    
+        tipoSelect.addEventListener('change', () => {
+          const tipoSelecionado = tipoSelect.value;
+          const subtipos = subtiposPorTipo[tipoSelecionado] || [];
+    
+          // Limpa e adiciona a primeira opção
+          subtipoSelect.innerHTML = '<option value="" disabled selected>Escolha um subtipo</option>';
+    
+          subtipos.forEach(subtipo => {
+            const option = document.createElement('option');
+            option.value = subtipo;
+            option.textContent = subtipo;
+            subtipoSelect.appendChild(option);
+          });
+    
+          subtipoSelect.disabled = subtipos.length === 0;
+        });
+      }
+    
+      // Aplica a função nos dois formulários
+      configurarSelects('tipo-select-receita', 'subtipo-select-receita');
+      configurarSelects('tipo-select-despesa', 'subtipo-select-despesa');
+    </script>
+
     <script>
         // Receita
         const openRevenueBtn = document.getElementById("add-button-revenue");

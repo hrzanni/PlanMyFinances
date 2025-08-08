@@ -1,81 +1,49 @@
 [
     {
+        "categoria": "receita",
+        "valor": 111.0,
+        "descricao": "qq",
+        "tipo": "aluguel",
+        "subtipo": "",
+        "data": "2025-08-08"
+    },
+    {
+        "categoria": "receita",
+        "valor": 110.0,
+        "descricao": "a",
+        "tipo": "alimenta\u00e7\u00e3o",
+        "subtipo": "mercado",
+        "data": "2025-08-08"
+    },
+    {
         "categoria": "despesa",
         "valor": 920.0,
-        "descricao": "Aluguel sc",
-        "tipo": "aa",
-        "subtipo": "a",
+        "descricao": "Aluguel da casa Rossi Allegra",
+        "tipo": "aluguel",
+        "subtipo": "",
+        "data": "2025-08-08"
+    },
+    {
+        "categoria": "despesa",
+        "valor": 550.0,
+        "descricao": "Aluguel predinho",
+        "tipo": "aluguel",
+        "subtipo": "",
         "data": "2025-08-08"
     },
     {
         "categoria": "receita",
         "valor": 5000.0,
         "descricao": "salario",
-        "tipo": "qq",
-        "subtipo": "",
-        "data": "2025-08-08"
-    },
-    {
-        "categoria": "receita",
-        "valor": 22.0,
-        "descricao": "aa",
-        "tipo": "a",
+        "tipo": "aluguel",
         "subtipo": "",
         "data": "2025-08-08"
     },
     {
         "categoria": "despesa",
-        "valor": 111.0,
+        "valor": 2.0,
         "descricao": "q",
-        "tipo": "q",
-        "subtipo": "",
-        "data": "2025-08-08"
-    },
-    {
-        "categoria": "receita",
-        "valor": 1000.0,
-        "descricao": "qqq",
-        "tipo": "qq",
-        "subtipo": "",
-        "data": "2025-08-08"
-    },
-    {
-        "categoria": "receita",
-        "valor": 1.0,
-        "descricao": "q",
-        "tipo": "q",
-        "subtipo": "",
-        "data": "2025-08-08"
-    },
-    {
-        "categoria": "receita",
-        "valor": 1.0,
-        "descricao": "q",
-        "tipo": "qq",
-        "subtipo": "",
-        "data": "2025-08-08"
-    },
-    {
-        "categoria": "receita",
-        "valor": 11.0,
-        "descricao": "haha",
-        "tipo": "an",
-        "subtipo": "",
-        "data": "2025-08-08"
-    },
-    {
-        "categoria": "receita",
-        "valor": 1.0,
-        "descricao": "q",
-        "tipo": "qq",
-        "subtipo": "",
-        "data": "2025-08-08"
-    },
-    {
-        "categoria": "despesa",
-        "valor": 6.0,
-        "descricao": "j",
-        "tipo": "a",
+        "tipo": "deslocamento",
         "subtipo": "",
         "data": "2025-08-08"
     }

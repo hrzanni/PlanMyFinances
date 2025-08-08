@@ -49,15 +49,42 @@ def carregar_dados_csv(arquivo):
 def retorna_tiposDisponiveis():
     return carregar_dados_csv('data/tipos.csv')    
 
+def retorna_Apenas_SubtitulosDisponiveis():
+    
+    subtipos = set()
+    try:
+        with open('data/subtipos.csv', 'r', encoding='utf-8') as csvfile:
+            reader = csv.reader(csvfile)
+            next(reader, None)  # Ignora o cabeçalho
+            for row in reader:
+                if row and len(row) >= 1:
+                    subtipo = row[0].strip()
+                    if subtipo:
+                        subtipos.add(subtipo)
+    except FileNotFoundError:
+        pass
 
-def retorna_subtiposDisponiveis():
-    return carregar_dados_csv('data/subtipos.csv')
+    return subtipos 
+
+def retorna_subtipos_por_tipo():
+    subtipos_por_tipo = {}
+    try:
+        with open('data/subtipos.csv', 'r', encoding='utf-8') as csvfile:
+            reader = csv.reader(csvfile)
+            next(reader, None)  # Pula a primeira linha (cabeçalho)
+            for row in reader:
+                if row and len(row) == 2:
+                    subtipo, tipo = row
+                    subtipos_por_tipo.setdefault(tipo.strip().lower(), []).append(subtipo.strip())
+    except FileNotFoundError:
+        pass
+    return subtipos_por_tipo
 
 
 def retorna_ultimasMovimentacoes():
     movimentacoes = carregar_dados_json('data/transacoes.json')
-
-    return movimentacoes
+    
+    return movimentacoes[::-1]
 
 @app.route('/')
 def home():
@@ -66,26 +93,32 @@ def home():
     tipos_disponiveis = retorna_tiposDisponiveis()
     print(f'Os TIPOS disponiveis{tipos_disponiveis}')
 
-    #Chama a função que retorna uma lista com os subtipos disponiveis
-    subtipos_disponiveis = retorna_subtiposDisponiveis()
-    print(f'Os SUBTIPOS disponiveis{subtipos_disponiveis}')
+    subtipos_por_tipo = retorna_subtipos_por_tipo()
 
     movimentacoes = retorna_ultimasMovimentacoes()
 
 
-    return render_template('home.html', tipos_disponiveis=tipos_disponiveis, subtipos_disponiveis=subtipos_disponiveis, movimentacoes=movimentacoes)
+    return render_template('home.html', tipos_disponiveis=tipos_disponiveis, subtipos_por_tipo=subtipos_por_tipo, movimentacoes=movimentacoes[:5])
 
 @app.route('/add-revenue', methods=['POST'])
 def add_revenue():
+
+    tipo = request.form['tipo'].lower()
+    subtipo = request.form.get('subtipo', '')
+
     nova_receita = {
         'categoria': 'receita',
         'valor': float(request.form['valor']),
         'descricao': request.form['descricao'],
-        'tipo': request.form['tipo'],
-        'subtipo': request.form.get('subtipo', ''),
+        'tipo': tipo,
+        'subtipo': subtipo,
         'data': request.form['data']
     }
 
+    subtipos_por_tipo = retorna_subtipos_por_tipo()
+
+    
+    
     dados = carregar_dados_json('data/receitas.json')
     dados.append(nova_receita)
     escrita_json('data/receitas.json', dados)
@@ -136,12 +169,37 @@ def remove_type():
 @app.route('/add-subtype', methods=['POST'])
 def add_subtype():
     novo_subtipo = request.form['subtipos']
+    tipo_relacionado = request.form['tipo_relacionado']
 
     with open('data/subtipos.csv', 'a', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow([novo_subtipo])
+        writer.writerow([novo_subtipo, tipo_relacionado])
 
     return redirect('/')
+
+
+@app.route('/histórico')
+def historico():
+
+    movimentacoes = retorna_ultimasMovimentacoes()
+
+    tipos_disponiveis = retorna_tiposDisponiveis()
+    todos_subtipos_disponiveis = retorna_Apenas_SubtitulosDisponiveis()
+
+    categoria_filtro = request.args.get('categoria', '').strip().lower()
+    tipo_filtro = request.args.get('tipo', '').strip().lower()
+    subtipo_filtro = request.args.get('subtipo', '').strip().lower()
+
+    # Aplica o filtro
+    if categoria_filtro:
+        movimentacoes = [m for m in movimentacoes if m['categoria'].strip().lower() == categoria_filtro]
+    if tipo_filtro:
+        movimentacoes = [m for m in movimentacoes if m['tipo'].strip().lower() == tipo_filtro]
+    if subtipo_filtro:
+        movimentacoes = [m for m in movimentacoes if m['subtipo'].strip().lower() == subtipo_filtro]
+
+    return render_template('historico.html',  movimentacoes_historico=movimentacoes, tipos_disponiveis=tipos_disponiveis,
+                           subtipos_disponiveis=todos_subtipos_disponiveis)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)  

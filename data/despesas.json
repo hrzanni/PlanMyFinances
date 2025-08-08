@@ -2,24 +2,24 @@
     {
         "categoria": "despesa",
         "valor": 920.0,
-        "descricao": "Aluguel sc",
-        "tipo": "aa",
-        "subtipo": "a",
-        "data": "2025-08-08"
-    },
-    {
-        "categoria": "despesa",
-        "valor": 111.0,
-        "descricao": "q",
-        "tipo": "q",
+        "descricao": "Aluguel da casa Rossi Allegra",
+        "tipo": "aluguel",
         "subtipo": "",
         "data": "2025-08-08"
     },
     {
         "categoria": "despesa",
-        "valor": 6.0,
-        "descricao": "j",
-        "tipo": "a",
+        "valor": 550.0,
+        "descricao": "Aluguel predinho",
+        "tipo": "aluguel",
+        "subtipo": "",
+        "data": "2025-08-08"
+    },
+    {
+        "categoria": "despesa",
+        "valor": 2.0,
+        "descricao": "q",
+        "tipo": "deslocamento",
         "subtipo": "",
         "data": "2025-08-08"
     }
