@@ -7,34 +7,78 @@ import os
 app = Flask(__name__)
 
 
+# Proximo passo
+# Desenvolverados = sorted(dados, key=lambda x: x['data'], reverse=True)  no espaço vazio um resumo geral de receitas e gastos recentes
+
+#Precisa colocar tudo no def home
+#As transações estao aparecendo add-revenue e add-expense
+
+
+# Um subtipo precisa estar relacionado a um tipo
+
+
+
+def carregar_dados_json(arquivo):
+    try:
+        if os.path.getsize(arquivo) == 0:
+            return []
+        with open(arquivo, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+    
+def escrita_json(arquivo, dados):
+    with open(arquivo , 'w') as f:
+        json.dump(dados, f, indent=4)
+    
+    return
+
+def carregar_dados_csv(arquivo):
+    modelo_disponiveis = []
+    try:
+        with open(arquivo, 'r', encoding='utf-8') as csvfile:
+            reader = csv.reader(csvfile)
+            for row in reader:
+                if row:
+                    modelo_disponiveis.append(row[0])
+    except FileNotFoundError:
+        pass
+
+    return modelo_disponiveis
+
+def retorna_tiposDisponiveis():
+    return carregar_dados_csv('data/tipos.csv')    
+
+
+def retorna_subtiposDisponiveis():
+    return carregar_dados_csv('data/subtipos.csv')
+
+
+def retorna_ultimasMovimentacoes():
+    movimentacoes = carregar_dados_json('data/transacoes.json')
+
+    return movimentacoes
+
 @app.route('/')
 def home():
 
-    tipos_disponiveis =[]
-    try:
-        with open('data/tipos.csv', 'r', encoding='utf-8') as csvfile:
-            reader = csv.reader(csvfile)
-            for row in reader:
-                if row:  # evita linhas vazias
-                    tipos_disponiveis.append(row[0])
-    except FileNotFoundError:
-        pass 
+    #Chama a função que retorna uma lista com os tipos disponiveis
+    tipos_disponiveis = retorna_tiposDisponiveis()
+    print(f'Os TIPOS disponiveis{tipos_disponiveis}')
 
-    subtipos_disponiveis =[]
-    try:
-        with open('data/subtipos.csv', 'r', encoding='utf-8') as csvfile:
-            reader = csv.reader(csvfile)
-            for row in reader:
-                if row:  # evita linhas vazias
-                    subtipos_disponiveis.append(row[0])
-    except FileNotFoundError:
-        pass  # caso o arquivo ainda não exista
+    #Chama a função que retorna uma lista com os subtipos disponiveis
+    subtipos_disponiveis = retorna_subtiposDisponiveis()
+    print(f'Os SUBTIPOS disponiveis{subtipos_disponiveis}')
 
-    return render_template('home.html', tipos_disponiveis=tipos_disponiveis, subtipos_disponiveis=subtipos_disponiveis)
+    movimentacoes = retorna_ultimasMovimentacoes()
+
+
+    return render_template('home.html', tipos_disponiveis=tipos_disponiveis, subtipos_disponiveis=subtipos_disponiveis, movimentacoes=movimentacoes)
 
 @app.route('/add-revenue', methods=['POST'])
 def add_revenue():
     nova_receita = {
+        'categoria': 'receita',
         'valor': float(request.form['valor']),
         'descricao': request.form['descricao'],
         'tipo': request.form['tipo'],
@@ -42,23 +86,20 @@ def add_revenue():
         'data': request.form['data']
     }
 
-    if os.path.exists('data/receitas.json'):
-        with open('data/receitas.json', 'r') as f:
-            dados = json.load(f)
-
-    else:
-        dados = []
-
+    dados = carregar_dados_json('data/receitas.json')
     dados.append(nova_receita)
+    escrita_json('data/receitas.json', dados)
 
-    with open('data/receitas.json' , 'w') as f:
-        json.dump(dados, f, indent=4)
+    transacoes = carregar_dados_json('data/transacoes.json')
+    transacoes.append(nova_receita)
+    escrita_json('data/transacoes.json', transacoes)
     
     return redirect('/')
 
 @app.route('/add-expense', methods=['POST'])
 def add_expense():
     nova_despesa = {
+        'categoria': 'despesa',
         'valor': float(request.form['valor']),
         'descricao': request.form['descricao'],
         'tipo': request.form['tipo'],
@@ -66,17 +107,14 @@ def add_expense():
         'data': request.form['data']
     }
 
-    if os.path.exists('data/despesas.json'):
-        with open('data/despesas.json', 'r') as f:
-            despesas = json.load(f)
-    
-    else:
-        despesas = []
-
+    despesas = carregar_dados_json('data/despesas.json')
     despesas.append(nova_despesa);
+    escrita_json('data/despesas.json', despesas)
 
-    with open('data/despesas.json', 'w') as f:
-        json.dump(despesas, f, indent=4)
+    transacoes = carregar_dados_json('data/transacoes.json')
+    transacoes.append(nova_despesa)
+    escrita_json('data/transacoes.json', transacoes)
+
 
     return redirect('/')
 

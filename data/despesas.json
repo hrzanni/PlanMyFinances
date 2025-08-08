@@ -1,9 +1,26 @@
 [
     {
-        "valor": 1111.0,
-        "descricao": "poaoa",
-        "tipo": "jjj",
+        "categoria": "despesa",
+        "valor": 920.0,
+        "descricao": "Aluguel sc",
+        "tipo": "aa",
+        "subtipo": "a",
+        "data": "2025-08-08"
+    },
+    {
+        "categoria": "despesa",
+        "valor": 111.0,
+        "descricao": "q",
+        "tipo": "q",
         "subtipo": "",
-        "data": "2025-08-06"
+        "data": "2025-08-08"
+    },
+    {
+        "categoria": "despesa",
+        "valor": 6.0,
+        "descricao": "j",
+        "tipo": "a",
+        "subtipo": "",
+        "data": "2025-08-08"
     }
 ]
