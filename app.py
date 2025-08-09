@@ -201,5 +201,11 @@ def historico():
     return render_template('historico.html',  movimentacoes_historico=movimentacoes, tipos_disponiveis=tipos_disponiveis,
                            subtipos_disponiveis=todos_subtipos_disponiveis)
 
+
+@app.route("/dashboard")
+def dashboard():
+    return render_template('dashboard.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)  
